@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.university.mapper.ScheduleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.university.entity.Schedule">
+        <result column="schedule_id" property="scheduleId" />
+        <result column="xq" property="xq" />
+        <result column="start" property="start" />
+        <result column="end" property="end" />
+        <result column="content" property="content" />
+        <result column="cno" property="cno" />
+        <result column="clazz_id" property="clazzId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        schedule_id, xq, start, end, content, cno, clazz_id
+    </sql>
+    <select id="selectScheduleByClazzId" resultType="com.example.university.entity.ScheduleRes">
+        SELECT `schedule`.*,
+            (SELECT clazz_name from clazz where `schedule`.clazz_id = clazz.clazz_id) as clazzName,
+            (SELECT cname FROM t_course WHERE t_course.cno = `schedule`.cno) as title
+        from `schedule`
+        where `schedule`.clazz_id = #{clazzId}
+    </select>
+
+</mapper>
